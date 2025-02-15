@@ -87,7 +87,7 @@ public class PlayerManager : MonoBehaviour
         else
         {
             aimTransform.gameObject.SetActive(false);
-            aimDirection = movementDirection.sqrMagnitude < 0.001f ? transform.forward : movementDirection;
+            aimDirection = movementDirection.magnitude == 0f ? transform.forward : movementDirection;
 
             SetPlayerAimDirection();
         }
@@ -98,7 +98,7 @@ public class PlayerManager : MonoBehaviour
         aimDirection.y = 0f;
         aimDirection.Normalize();
 
-        if (aimDirection.sqrMagnitude < 0.001f)
+        if (aimDirection.magnitude == 0f)
         {
             return;
         }
