@@ -12,31 +12,26 @@ public class InputManager : MonoBehaviour
     private void OnEnable()
     {
         inputControls.Enable();
-
-        inputControls.Player.Movement.performed += ctx => GetPlayerMovement = ctx.ReadValue<Vector2>();
-        inputControls.Player.Movement.canceled += ctx => GetPlayerMovement = Vector2.zero;
-
-        inputControls.Player.Aim.performed += ctx => GetPlayerAimPosition = ctx.ReadValue<Vector2>();
-        inputControls.Player.Aim.canceled += ctx => GetPlayerAimPosition = Vector2.zero;
-
-        inputControls.Player.Shoot.started += ctx => IsPlayerShooting = true;
-        inputControls.Player.Shoot.canceled += ctx => IsPlayerShooting = false;
     }
 
     private void OnDisable()
     {
-        inputControls.Player.Movement.performed -= ctx => GetPlayerMovement = ctx.ReadValue<Vector2>();
-        inputControls.Player.Movement.canceled -= ctx => GetPlayerMovement = Vector2.zero;
-
-        inputControls.Player.Aim.performed -= ctx => GetPlayerAimPosition = ctx.ReadValue<Vector2>();
-        inputControls.Player.Aim.canceled -= ctx => GetPlayerAimPosition = Vector2.zero;
-
-        inputControls.Player.Shoot.started -= ctx => IsPlayerShooting = true;
-        inputControls.Player.Shoot.canceled -= ctx => IsPlayerShooting = false;
-
         inputControls.Disable();
     }
-    public bool IsPlayerShooting { get; private set; }
+
+    private void Update()
+    {
+        GetPlayerMovement = inputControls.Player.Movement.ReadValue<Vector2>();
+
+        IsPlayerShooting = inputControls.Player.Shoot.IsPressed();
+
+        IsPlayerAiming = inputControls.Player.Aim.IsPressed();
+
+        GetPlayerAimPosition = inputControls.Player.AimPosition.ReadValue<Vector2>();
+    }
+
     public Vector2 GetPlayerMovement { get; private set; }
+    public bool IsPlayerShooting { get; private set; }
+    public bool IsPlayerAiming { get; private set; }
     public Vector2 GetPlayerAimPosition { get; private set; }
 }
