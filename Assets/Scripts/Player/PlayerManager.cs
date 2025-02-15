@@ -11,11 +11,12 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private float gravityForce;
     [Space]
     [Header("Aim Variables")]
-    [SerializeField] private Transform aimObject;
+    [SerializeField] private Transform aimTransform;
     [SerializeField] private LayerMask aimLayerMask;
 
     // Private Variables
     private CharacterController characterController;
+    private Animator playerAnimator;
 
     private Vector3 movementDirection;
     private float verticalVelocity;
@@ -24,12 +25,14 @@ public class PlayerManager : MonoBehaviour
     private void Awake()
     {
         characterController = GetComponent<CharacterController>();
+        playerAnimator = GetComponent<Animator>();
     }
 
     private void Update()
     {
         SetMovement();
         SetAim();
+        SetAnimation();
     }
 
     private void SetMovement()
@@ -59,18 +62,55 @@ public class PlayerManager : MonoBehaviour
 
     private void SetAim()
     {
-        Ray ray = Camera.main.ScreenPointToRay(inputManager.GetPlayerAimPosition);
-
-        if (Physics.Raycast(ray, out var hitInfo, Mathf.Infinity, aimLayerMask))
+        if (inputManager.IsPlayerAiming)
         {
-            aimDirection = hitInfo.point - transform.position;
-            aimDirection.y = 0f;
-            aimDirection.Normalize();
+            aimTransform.gameObject.SetActive(true);
 
-            transform.forward = aimDirection;
+            Ray ray = Camera.main.ScreenPointToRay(inputManager.GetPlayerAimPosition);
+            if (Physics.Raycast(ray, out var hitInfo, Mathf.Infinity, aimLayerMask))
+            {
+                aimDirection = hitInfo.point - transform.position;
 
-            aimObject.position = 
-                new Vector3(hitInfo.point.x, transform.position.y + characterController.height - .2f, hitInfo.point.z);
+                aimTransform.position = new Vector3(
+                    hitInfo.point.x,
+                    transform.position.y + characterController.height - 0.2f,
+                    hitInfo.point.z
+                    );
+            }
+            else
+            {
+                aimDirection = Camera.main.transform.forward;
+            }
+
+            SetPlayerAimDirection();
         }
+        else
+        {
+            aimTransform.gameObject.SetActive(false);
+            aimDirection = movementDirection.sqrMagnitude < 0.001f ? transform.forward : movementDirection;
+
+            SetPlayerAimDirection();
+        }
+    }
+
+    private void SetPlayerAimDirection()
+    {
+        aimDirection.y = 0f;
+        aimDirection.Normalize();
+
+        if (aimDirection.sqrMagnitude < 0.001f)
+        {
+            return;
+        }
+        transform.forward = aimDirection;
+    }
+
+    private void SetAnimation()
+    {
+        float xVelocity = Vector3.Dot(movementDirection.normalized, transform.right);
+        float zVelocity = Vector3.Dot(movementDirection.normalized, transform.forward);
+
+        playerAnimator.SetFloat("xVelocity", xVelocity, 0.1f, Time.deltaTime);
+        playerAnimator.SetFloat("zVelocity", zVelocity, 0.1f, Time.deltaTime);
     }
 }
