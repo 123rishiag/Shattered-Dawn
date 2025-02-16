@@ -7,7 +7,8 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private InputManager inputManager;
     [Space]
     [Header("Movement Variables")]
-    [SerializeField] private float moveSpeed;
+    [SerializeField] private float walkSpeed;
+    [SerializeField] private float runSpeed;
     [SerializeField] private float gravityForce;
     [Space]
     [Header("Aim Variables")]
@@ -17,6 +18,9 @@ public class PlayerManager : MonoBehaviour
     // Private Variables
     private CharacterController characterController;
     private Animator playerAnimator;
+
+    private PlayerMoveState playerMoveState;
+    private PlayerCombatState playerCombatState;
 
     private Vector3 movementDirection;
     private float verticalVelocity;
@@ -28,35 +32,77 @@ public class PlayerManager : MonoBehaviour
         playerAnimator = GetComponent<Animator>();
     }
 
+    private void Start()
+    {
+        playerMoveState = PlayerMoveState.IDLE;
+        playerCombatState = PlayerCombatState.NONE;
+    }
+
     private void Update()
     {
+        SetPlayerState();
+        SetGravity();
         SetMovement();
         SetAim();
         SetAnimation();
     }
 
-    private void SetMovement()
+    private void SetPlayerState()
     {
-        movementDirection = new Vector3(inputManager.GetPlayerMovement.x, 0f, inputManager.GetPlayerMovement.y);
-
-        SetGravity();
-
-        if (movementDirection.magnitude > 0)
+        SetPlayerMoveState();
+        SetPlayerCombatState();
+    }
+    private void SetPlayerMoveState()
+    {
+        if (inputManager.GetPlayerMovement.magnitude > 0)
         {
-            characterController.Move(movementDirection * moveSpeed * Time.deltaTime);
+            if (inputManager.IsPlayerRunning)
+            {
+                playerMoveState = PlayerMoveState.RUN;
+            }
+            else
+            {
+                playerMoveState = PlayerMoveState.WALK;
+            }
         }
+        else if (!characterController.isGrounded)
+        {
+            playerMoveState = PlayerMoveState.FALL;
+        }
+        else
+        {
+            playerMoveState = PlayerMoveState.IDLE;
+        }
+    }
+    private void SetPlayerCombatState()
+    {
+
     }
 
     private void SetGravity()
     {
-        if (!characterController.isGrounded)
+        if (playerMoveState == PlayerMoveState.FALL)
         {
             verticalVelocity -= gravityForce * Time.deltaTime;
             movementDirection.y = verticalVelocity;
         }
         else
         {
-            verticalVelocity = -.5f;
+            verticalVelocity = -2f;
+        }
+        movementDirection.y = verticalVelocity;
+    }
+    private void SetMovement()
+    {
+        movementDirection = new Vector3(inputManager.GetPlayerMovement.x, movementDirection.y, inputManager.GetPlayerMovement.y);
+
+        if (playerMoveState == PlayerMoveState.RUN)
+        {
+            characterController.Move(movementDirection * runSpeed * Time.deltaTime);
+        }
+        else if (playerMoveState == PlayerMoveState.WALK)
+        {
+            characterController.Move(movementDirection * walkSpeed * Time.deltaTime);
         }
     }
 
@@ -112,5 +158,31 @@ public class PlayerManager : MonoBehaviour
 
         playerAnimator.SetFloat("xVelocity", xVelocity, 0.1f, Time.deltaTime);
         playerAnimator.SetFloat("zVelocity", zVelocity, 0.1f, Time.deltaTime);
+
+        string newAnimation = GetAnimationTrigger();
+
+        if (!IsCurrentAnimation(newAnimation))
+        {
+            playerAnimator.CrossFade(newAnimation, 0.1f);
+        }
+    }
+
+    private bool IsCurrentAnimation(string _animationName)
+    {
+        AnimatorStateInfo stateInfo = playerAnimator.GetCurrentAnimatorStateInfo(0);
+        return stateInfo.IsName(_animationName) || playerAnimator.IsInTransition(0);
+    }
+
+    private string GetAnimationTrigger()
+    {
+        switch (playerMoveState)
+        {
+            case PlayerMoveState.RUN:
+                return "Run";
+            case PlayerMoveState.WALK:
+                return "Walk";
+            default:
+                return "Idle";
+        }
     }
 }
