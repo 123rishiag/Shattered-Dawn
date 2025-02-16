@@ -28,7 +28,7 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
             ""id"": ""dcbf10ad-0291-4947-9506-a27cc556999a"",
             ""actions"": [
                 {
-                    ""name"": ""Move"",
+                    ""name"": ""Movement"",
                     ""type"": ""Value"",
                     ""id"": ""4fbfefc2-609a-43e9-8aea-ac591a40fee6"",
                     ""expectedControlType"": ""Vector2"",
@@ -37,7 +37,7 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""Run"",
+                    ""name"": ""IsRunning"",
                     ""type"": ""Button"",
                     ""id"": ""8b1fafc6-2ff2-45a4-98e5-8bf44eafaffb"",
                     ""expectedControlType"": """",
@@ -46,7 +46,7 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Shoot"",
+                    ""name"": ""IsShooting"",
                     ""type"": ""Button"",
                     ""id"": ""f3720f3a-a960-4252-b03a-6e648ac81e9c"",
                     ""expectedControlType"": """",
@@ -55,7 +55,7 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Aim"",
+                    ""name"": ""IsAiming"",
                     ""type"": ""Button"",
                     ""id"": ""ef595cb6-c760-4fbf-ae16-c4dae524527b"",
                     ""expectedControlType"": """",
@@ -64,7 +64,7 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""AimPosition"",
+                    ""name"": ""LookDelta"",
                     ""type"": ""Value"",
                     ""id"": ""5688e344-2a34-4188-8d83-325af21b76d7"",
                     ""expectedControlType"": ""Vector2"",
@@ -81,7 +81,7 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Move"",
+                    ""action"": ""Movement"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -92,7 +92,7 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Move"",
+                    ""action"": ""Movement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -103,7 +103,7 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Move"",
+                    ""action"": ""Movement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -114,7 +114,7 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Move"",
+                    ""action"": ""Movement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -125,7 +125,7 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Move"",
+                    ""action"": ""Movement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -136,7 +136,7 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Move"",
+                    ""action"": ""Movement"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -147,7 +147,7 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Move"",
+                    ""action"": ""Movement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -158,7 +158,7 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Move"",
+                    ""action"": ""Movement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -169,7 +169,7 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Move"",
+                    ""action"": ""Movement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -180,18 +180,18 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Move"",
+                    ""action"": ""Movement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
                 {
                     ""name"": """",
                     ""id"": ""a16673cd-ee3a-47d9-af7a-5ba38736e6a6"",
-                    ""path"": ""<Mouse>/position"",
+                    ""path"": ""<Mouse>/delta"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""AimPosition"",
+                    ""action"": ""LookDelta"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -202,7 +202,7 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Aim"",
+                    ""action"": ""IsAiming"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -213,7 +213,7 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Shoot"",
+                    ""action"": ""IsShooting"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -224,7 +224,7 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Run"",
+                    ""action"": ""IsRunning"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -296,11 +296,11 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
 }");
         // Player
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
-        m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
-        m_Player_Run = m_Player.FindAction("Run", throwIfNotFound: true);
-        m_Player_Shoot = m_Player.FindAction("Shoot", throwIfNotFound: true);
-        m_Player_Aim = m_Player.FindAction("Aim", throwIfNotFound: true);
-        m_Player_AimPosition = m_Player.FindAction("AimPosition", throwIfNotFound: true);
+        m_Player_Movement = m_Player.FindAction("Movement", throwIfNotFound: true);
+        m_Player_IsRunning = m_Player.FindAction("IsRunning", throwIfNotFound: true);
+        m_Player_IsShooting = m_Player.FindAction("IsShooting", throwIfNotFound: true);
+        m_Player_IsAiming = m_Player.FindAction("IsAiming", throwIfNotFound: true);
+        m_Player_LookDelta = m_Player.FindAction("LookDelta", throwIfNotFound: true);
     }
 
     ~@InputControls()
@@ -367,20 +367,20 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
     // Player
     private readonly InputActionMap m_Player;
     private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
-    private readonly InputAction m_Player_Move;
-    private readonly InputAction m_Player_Run;
-    private readonly InputAction m_Player_Shoot;
-    private readonly InputAction m_Player_Aim;
-    private readonly InputAction m_Player_AimPosition;
+    private readonly InputAction m_Player_Movement;
+    private readonly InputAction m_Player_IsRunning;
+    private readonly InputAction m_Player_IsShooting;
+    private readonly InputAction m_Player_IsAiming;
+    private readonly InputAction m_Player_LookDelta;
     public struct PlayerActions
     {
         private @InputControls m_Wrapper;
         public PlayerActions(@InputControls wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Move => m_Wrapper.m_Player_Move;
-        public InputAction @Run => m_Wrapper.m_Player_Run;
-        public InputAction @Shoot => m_Wrapper.m_Player_Shoot;
-        public InputAction @Aim => m_Wrapper.m_Player_Aim;
-        public InputAction @AimPosition => m_Wrapper.m_Player_AimPosition;
+        public InputAction @Movement => m_Wrapper.m_Player_Movement;
+        public InputAction @IsRunning => m_Wrapper.m_Player_IsRunning;
+        public InputAction @IsShooting => m_Wrapper.m_Player_IsShooting;
+        public InputAction @IsAiming => m_Wrapper.m_Player_IsAiming;
+        public InputAction @LookDelta => m_Wrapper.m_Player_LookDelta;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -390,40 +390,40 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_PlayerActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_PlayerActionsCallbackInterfaces.Add(instance);
-            @Move.started += instance.OnMove;
-            @Move.performed += instance.OnMove;
-            @Move.canceled += instance.OnMove;
-            @Run.started += instance.OnRun;
-            @Run.performed += instance.OnRun;
-            @Run.canceled += instance.OnRun;
-            @Shoot.started += instance.OnShoot;
-            @Shoot.performed += instance.OnShoot;
-            @Shoot.canceled += instance.OnShoot;
-            @Aim.started += instance.OnAim;
-            @Aim.performed += instance.OnAim;
-            @Aim.canceled += instance.OnAim;
-            @AimPosition.started += instance.OnAimPosition;
-            @AimPosition.performed += instance.OnAimPosition;
-            @AimPosition.canceled += instance.OnAimPosition;
+            @Movement.started += instance.OnMovement;
+            @Movement.performed += instance.OnMovement;
+            @Movement.canceled += instance.OnMovement;
+            @IsRunning.started += instance.OnIsRunning;
+            @IsRunning.performed += instance.OnIsRunning;
+            @IsRunning.canceled += instance.OnIsRunning;
+            @IsShooting.started += instance.OnIsShooting;
+            @IsShooting.performed += instance.OnIsShooting;
+            @IsShooting.canceled += instance.OnIsShooting;
+            @IsAiming.started += instance.OnIsAiming;
+            @IsAiming.performed += instance.OnIsAiming;
+            @IsAiming.canceled += instance.OnIsAiming;
+            @LookDelta.started += instance.OnLookDelta;
+            @LookDelta.performed += instance.OnLookDelta;
+            @LookDelta.canceled += instance.OnLookDelta;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
         {
-            @Move.started -= instance.OnMove;
-            @Move.performed -= instance.OnMove;
-            @Move.canceled -= instance.OnMove;
-            @Run.started -= instance.OnRun;
-            @Run.performed -= instance.OnRun;
-            @Run.canceled -= instance.OnRun;
-            @Shoot.started -= instance.OnShoot;
-            @Shoot.performed -= instance.OnShoot;
-            @Shoot.canceled -= instance.OnShoot;
-            @Aim.started -= instance.OnAim;
-            @Aim.performed -= instance.OnAim;
-            @Aim.canceled -= instance.OnAim;
-            @AimPosition.started -= instance.OnAimPosition;
-            @AimPosition.performed -= instance.OnAimPosition;
-            @AimPosition.canceled -= instance.OnAimPosition;
+            @Movement.started -= instance.OnMovement;
+            @Movement.performed -= instance.OnMovement;
+            @Movement.canceled -= instance.OnMovement;
+            @IsRunning.started -= instance.OnIsRunning;
+            @IsRunning.performed -= instance.OnIsRunning;
+            @IsRunning.canceled -= instance.OnIsRunning;
+            @IsShooting.started -= instance.OnIsShooting;
+            @IsShooting.performed -= instance.OnIsShooting;
+            @IsShooting.canceled -= instance.OnIsShooting;
+            @IsAiming.started -= instance.OnIsAiming;
+            @IsAiming.performed -= instance.OnIsAiming;
+            @IsAiming.canceled -= instance.OnIsAiming;
+            @LookDelta.started -= instance.OnLookDelta;
+            @LookDelta.performed -= instance.OnLookDelta;
+            @LookDelta.canceled -= instance.OnLookDelta;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -488,10 +488,10 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
     }
     public interface IPlayerActions
     {
-        void OnMove(InputAction.CallbackContext context);
-        void OnRun(InputAction.CallbackContext context);
-        void OnShoot(InputAction.CallbackContext context);
-        void OnAim(InputAction.CallbackContext context);
-        void OnAimPosition(InputAction.CallbackContext context);
+        void OnMovement(InputAction.CallbackContext context);
+        void OnIsRunning(InputAction.CallbackContext context);
+        void OnIsShooting(InputAction.CallbackContext context);
+        void OnIsAiming(InputAction.CallbackContext context);
+        void OnLookDelta(InputAction.CallbackContext context);
     }
 }
