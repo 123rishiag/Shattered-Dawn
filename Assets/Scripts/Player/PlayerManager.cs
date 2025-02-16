@@ -5,6 +5,8 @@ public class PlayerManager : MonoBehaviour
     // Inspector Elements
     [Header("Input Manager")]
     [SerializeField] private InputManager inputManager;
+    [Header("Camera Manager")]
+    [SerializeField] private CameraManager cameraManager;
     [Space]
     [Header("Movement Variables")]
     [SerializeField] private float walkSpeed;
@@ -20,7 +22,6 @@ public class PlayerManager : MonoBehaviour
     private Animator playerAnimator;
 
     private PlayerMoveState playerMoveState;
-    private PlayerCombatState playerCombatState;
 
     private Vector3 movementDirection;
     private float verticalVelocity;
@@ -35,7 +36,6 @@ public class PlayerManager : MonoBehaviour
     private void Start()
     {
         playerMoveState = PlayerMoveState.IDLE;
-        playerCombatState = PlayerCombatState.NONE;
     }
 
     private void Update()
@@ -95,6 +95,7 @@ public class PlayerManager : MonoBehaviour
     private void SetMovement()
     {
         movementDirection = new Vector3(inputManager.GetPlayerMovement.x, movementDirection.y, inputManager.GetPlayerMovement.y);
+        movementDirection = cameraManager.GetCameraPlanerRotation() * movementDirection;
 
         if (playerMoveState == PlayerMoveState.RUN)
         {
@@ -112,7 +113,7 @@ public class PlayerManager : MonoBehaviour
         {
             aimTransform.gameObject.SetActive(true);
 
-            Ray ray = Camera.main.ScreenPointToRay(inputManager.GetPlayerAimPosition);
+            Ray ray = Camera.main.ScreenPointToRay(inputManager.GetPlayerLookDelta);
             if (Physics.Raycast(ray, out var hitInfo, Mathf.Infinity, aimLayerMask))
             {
                 aimDirection = hitInfo.point - transform.position;
