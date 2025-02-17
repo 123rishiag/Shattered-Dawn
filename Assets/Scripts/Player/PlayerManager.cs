@@ -8,10 +8,16 @@ public class PlayerManager : MonoBehaviour
     [Header("Camera Manager")]
     [SerializeField] private CameraManager cameraManager;
     [Space]
+    [Header("Gizmos Variables")]
+    [SerializeField] private bool shouldDrawGizmos;
+    [Space]
     [Header("Movement Variables")]
     [SerializeField] private float walkSpeed;
     [SerializeField] private float runSpeed;
     [SerializeField] private float gravityForce;
+    [SerializeField] private float groundCheckRadius;
+    [SerializeField] private Vector3 groundCheckOffset;
+    [SerializeField] private LayerMask groundLayerMask;
     [Space]
     [Header("Aim Variables")]
     [SerializeField] private Transform aimTransform;
@@ -41,12 +47,12 @@ public class PlayerManager : MonoBehaviour
     private void Update()
     {
         SetPlayerState();
-        SetGravity();
         SetMovement();
         SetAim();
         SetAnimation();
     }
 
+    // Setters
     private void SetPlayerState()
     {
         SetPlayerMoveState();
@@ -54,7 +60,11 @@ public class PlayerManager : MonoBehaviour
     }
     private void SetPlayerMoveState()
     {
-        if (inputManager.GetPlayerMovement.magnitude > 0)
+        if (!IsGrounded())
+        {
+            playerMoveState = PlayerMoveState.FALL;
+        }
+        else if (inputManager.GetPlayerMovement.magnitude > 0)
         {
             if (inputManager.IsPlayerRunning)
             {
@@ -64,10 +74,6 @@ public class PlayerManager : MonoBehaviour
             {
                 playerMoveState = PlayerMoveState.WALK;
             }
-        }
-        else if (!characterController.isGrounded)
-        {
-            playerMoveState = PlayerMoveState.FALL;
         }
         else
         {
@@ -79,22 +85,10 @@ public class PlayerManager : MonoBehaviour
 
     }
 
-    private void SetGravity()
-    {
-        if (playerMoveState == PlayerMoveState.FALL)
-        {
-            verticalVelocity -= gravityForce * Time.deltaTime;
-            movementDirection.y = verticalVelocity;
-        }
-        else
-        {
-            verticalVelocity = -2f;
-        }
-        movementDirection.y = verticalVelocity;
-    }
     private void SetMovement()
     {
         movementDirection = new Vector3(inputManager.GetPlayerMovement.x, movementDirection.y, inputManager.GetPlayerMovement.y);
+        SetGravity();
         movementDirection = cameraManager.GetCameraPlanerRotation() * movementDirection;
 
         if (playerMoveState == PlayerMoveState.RUN)
@@ -105,6 +99,23 @@ public class PlayerManager : MonoBehaviour
         {
             characterController.Move(movementDirection * walkSpeed * Time.deltaTime);
         }
+        else
+        {
+            characterController.Move(movementDirection * Time.deltaTime);
+        }
+    }
+    private void SetGravity()
+    {
+        if (playerMoveState == PlayerMoveState.FALL)
+        {
+            verticalVelocity -= gravityForce * Time.deltaTime;
+            movementDirection.y = verticalVelocity;
+        }
+        else
+        {
+            verticalVelocity = -.5f;
+        }
+        movementDirection.y = verticalVelocity;
     }
 
     private void SetAim()
@@ -168,6 +179,8 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
+
+    // Getters
     private bool IsCurrentAnimation(string _animationName)
     {
         AnimatorStateInfo stateInfo = playerAnimator.GetCurrentAnimatorStateInfo(0);
@@ -185,5 +198,21 @@ public class PlayerManager : MonoBehaviour
             default:
                 return "Idle";
         }
+    }
+
+    private bool IsGrounded() => Physics.CheckSphere(transform.TransformPoint(groundCheckOffset), groundCheckRadius, groundLayerMask);
+
+    // Gizmos
+    private void OnDrawGizmos()
+    {
+        if (shouldDrawGizmos)
+        {
+            DrawGroundGizmos();
+        }
+    }
+    private void DrawGroundGizmos()
+    {
+        Gizmos.color = Color.blue;
+        Gizmos.DrawSphere(transform.TransformPoint(groundCheckOffset), groundCheckRadius);
     }
 }

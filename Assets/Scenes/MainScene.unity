@@ -847,7 +847,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &832575518
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4528,9 +4528,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputManager: {fileID: 1672469323}
   cameraManager: {fileID: 330585548}
+  shouldDrawGizmos: 0
   walkSpeed: 2
   runSpeed: 5
   gravityForce: 9.81
+  groundCheckRadius: 0.2
+  groundCheckOffset: {x: 0, y: 0.1, z: 0.01}
+  groundLayerMask:
+    serializedVersion: 2
+    m_Bits: 192
   aimTransform: {fileID: 659267608}
   aimLayerMask:
     serializedVersion: 2
@@ -4559,7 +4565,7 @@ CharacterController:
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0.88, z: 0}
+  m_Center: {x: 0, y: 0.88, z: 0.03}
 --- !u!4 &8841413302852210376
 Transform:
   m_ObjectHideFlags: 0
