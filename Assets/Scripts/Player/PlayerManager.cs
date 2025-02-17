@@ -113,7 +113,7 @@ public class PlayerManager : MonoBehaviour
         {
             aimTransform.gameObject.SetActive(true);
 
-            Ray ray = Camera.main.ScreenPointToRay(inputManager.GetPlayerLookDelta);
+            Ray ray = Camera.main.ScreenPointToRay(inputManager.GetPlayerAimPosition);
             if (Physics.Raycast(ray, out var hitInfo, Mathf.Infinity, aimLayerMask))
             {
                 aimDirection = hitInfo.point - transform.position;

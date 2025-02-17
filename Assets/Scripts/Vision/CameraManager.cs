@@ -41,11 +41,11 @@ public class CameraManager : MonoBehaviour
 
     private void CalculateCameraRotation()
     {
-        // Adjust rotations based on input
-        rotationX += inputManager.GetPlayerLookDelta.y * invertVerticalMouseVal * rotationSpeed * Time.deltaTime * 100f;
+        // Adjusting rotations based on input
+        rotationX += inputManager.GetCameraLookDelta.y * invertVerticalMouseVal * rotationSpeed * Time.deltaTime * 100f;
         rotationX = Mathf.Clamp(rotationX, upVerticalAngle, downVerticalAngle);
 
-        rotationY += inputManager.GetPlayerLookDelta.x * invertHorizontalMouseVal * rotationSpeed * Time.deltaTime * 100f;
+        rotationY += inputManager.GetCameraLookDelta.x * invertHorizontalMouseVal * rotationSpeed * Time.deltaTime * 100f;
     }
 
     private void UpdateCameraPosition()

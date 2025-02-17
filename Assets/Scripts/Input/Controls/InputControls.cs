@@ -64,9 +64,9 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""LookDelta"",
+                    ""name"": ""AimPosition"",
                     ""type"": ""Value"",
-                    ""id"": ""5688e344-2a34-4188-8d83-325af21b76d7"",
+                    ""id"": ""5260345e-5b19-415d-984b-c79370d97889"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -186,12 +186,12 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""a16673cd-ee3a-47d9-af7a-5ba38736e6a6"",
-                    ""path"": ""<Mouse>/delta"",
+                    ""id"": ""3f5cb14c-26c9-41bc-aab7-75f55c2dca8b"",
+                    ""path"": ""<Mouse>/position"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""LookDelta"",
+                    ""action"": ""AimPosition"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -225,6 +225,34 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""IsRunning"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""Camera"",
+            ""id"": ""d7286e50-420d-492f-bbe5-e35a39bdda51"",
+            ""actions"": [
+                {
+                    ""name"": ""MouseDelta"",
+                    ""type"": ""Value"",
+                    ""id"": ""39df838b-8ac9-460b-ad09-65ee8b578eb4"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""06f1339b-119b-4b22-95aa-d98e8e69fc97"",
+                    ""path"": ""<Mouse>/delta"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MouseDelta"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -300,12 +328,16 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
         m_Player_IsRunning = m_Player.FindAction("IsRunning", throwIfNotFound: true);
         m_Player_IsShooting = m_Player.FindAction("IsShooting", throwIfNotFound: true);
         m_Player_IsAiming = m_Player.FindAction("IsAiming", throwIfNotFound: true);
-        m_Player_LookDelta = m_Player.FindAction("LookDelta", throwIfNotFound: true);
+        m_Player_AimPosition = m_Player.FindAction("AimPosition", throwIfNotFound: true);
+        // Camera
+        m_Camera = asset.FindActionMap("Camera", throwIfNotFound: true);
+        m_Camera_MouseDelta = m_Camera.FindAction("MouseDelta", throwIfNotFound: true);
     }
 
     ~@InputControls()
     {
         UnityEngine.Debug.Assert(!m_Player.enabled, "This will cause a leak and performance issues, InputControls.Player.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_Camera.enabled, "This will cause a leak and performance issues, InputControls.Camera.Disable() has not been called.");
     }
 
     public void Dispose()
@@ -371,7 +403,7 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_IsRunning;
     private readonly InputAction m_Player_IsShooting;
     private readonly InputAction m_Player_IsAiming;
-    private readonly InputAction m_Player_LookDelta;
+    private readonly InputAction m_Player_AimPosition;
     public struct PlayerActions
     {
         private @InputControls m_Wrapper;
@@ -380,7 +412,7 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
         public InputAction @IsRunning => m_Wrapper.m_Player_IsRunning;
         public InputAction @IsShooting => m_Wrapper.m_Player_IsShooting;
         public InputAction @IsAiming => m_Wrapper.m_Player_IsAiming;
-        public InputAction @LookDelta => m_Wrapper.m_Player_LookDelta;
+        public InputAction @AimPosition => m_Wrapper.m_Player_AimPosition;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -402,9 +434,9 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
             @IsAiming.started += instance.OnIsAiming;
             @IsAiming.performed += instance.OnIsAiming;
             @IsAiming.canceled += instance.OnIsAiming;
-            @LookDelta.started += instance.OnLookDelta;
-            @LookDelta.performed += instance.OnLookDelta;
-            @LookDelta.canceled += instance.OnLookDelta;
+            @AimPosition.started += instance.OnAimPosition;
+            @AimPosition.performed += instance.OnAimPosition;
+            @AimPosition.canceled += instance.OnAimPosition;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -421,9 +453,9 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
             @IsAiming.started -= instance.OnIsAiming;
             @IsAiming.performed -= instance.OnIsAiming;
             @IsAiming.canceled -= instance.OnIsAiming;
-            @LookDelta.started -= instance.OnLookDelta;
-            @LookDelta.performed -= instance.OnLookDelta;
-            @LookDelta.canceled -= instance.OnLookDelta;
+            @AimPosition.started -= instance.OnAimPosition;
+            @AimPosition.performed -= instance.OnAimPosition;
+            @AimPosition.canceled -= instance.OnAimPosition;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -441,6 +473,52 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
         }
     }
     public PlayerActions @Player => new PlayerActions(this);
+
+    // Camera
+    private readonly InputActionMap m_Camera;
+    private List<ICameraActions> m_CameraActionsCallbackInterfaces = new List<ICameraActions>();
+    private readonly InputAction m_Camera_MouseDelta;
+    public struct CameraActions
+    {
+        private @InputControls m_Wrapper;
+        public CameraActions(@InputControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @MouseDelta => m_Wrapper.m_Camera_MouseDelta;
+        public InputActionMap Get() { return m_Wrapper.m_Camera; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(CameraActions set) { return set.Get(); }
+        public void AddCallbacks(ICameraActions instance)
+        {
+            if (instance == null || m_Wrapper.m_CameraActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_CameraActionsCallbackInterfaces.Add(instance);
+            @MouseDelta.started += instance.OnMouseDelta;
+            @MouseDelta.performed += instance.OnMouseDelta;
+            @MouseDelta.canceled += instance.OnMouseDelta;
+        }
+
+        private void UnregisterCallbacks(ICameraActions instance)
+        {
+            @MouseDelta.started -= instance.OnMouseDelta;
+            @MouseDelta.performed -= instance.OnMouseDelta;
+            @MouseDelta.canceled -= instance.OnMouseDelta;
+        }
+
+        public void RemoveCallbacks(ICameraActions instance)
+        {
+            if (m_Wrapper.m_CameraActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(ICameraActions instance)
+        {
+            foreach (var item in m_Wrapper.m_CameraActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_CameraActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public CameraActions @Camera => new CameraActions(this);
     private int m_KeyboardMouseSchemeIndex = -1;
     public InputControlScheme KeyboardMouseScheme
     {
@@ -492,6 +570,10 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
         void OnIsRunning(InputAction.CallbackContext context);
         void OnIsShooting(InputAction.CallbackContext context);
         void OnIsAiming(InputAction.CallbackContext context);
-        void OnLookDelta(InputAction.CallbackContext context);
+        void OnAimPosition(InputAction.CallbackContext context);
+    }
+    public interface ICameraActions
+    {
+        void OnMouseDelta(InputAction.CallbackContext context);
     }
 }
