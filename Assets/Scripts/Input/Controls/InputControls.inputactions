@@ -42,9 +42,9 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "LookDelta",
+                    "name": "AimPosition",
                     "type": "Value",
-                    "id": "5688e344-2a34-4188-8d83-325af21b76d7",
+                    "id": "5260345e-5b19-415d-984b-c79370d97889",
                     "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
@@ -164,12 +164,12 @@
                 },
                 {
                     "name": "",
-                    "id": "a16673cd-ee3a-47d9-af7a-5ba38736e6a6",
-                    "path": "<Mouse>/delta",
+                    "id": "3f5cb14c-26c9-41bc-aab7-75f55c2dca8b",
+                    "path": "<Mouse>/position",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "LookDelta",
+                    "action": "AimPosition",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -203,6 +203,34 @@
                     "processors": "",
                     "groups": "",
                     "action": "IsRunning",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Camera",
+            "id": "d7286e50-420d-492f-bbe5-e35a39bdda51",
+            "actions": [
+                {
+                    "name": "MouseDelta",
+                    "type": "Value",
+                    "id": "39df838b-8ac9-460b-ad09-65ee8b578eb4",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "06f1339b-119b-4b22-95aa-d98e8e69fc97",
+                    "path": "<Mouse>/delta",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MouseDelta",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

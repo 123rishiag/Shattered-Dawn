@@ -25,12 +25,16 @@ public class InputManager : MonoBehaviour
         IsPlayerRunning = inputControls.Player.IsRunning.IsPressed();
         IsPlayerShooting = inputControls.Player.IsShooting.IsPressed();
         IsPlayerAiming = inputControls.Player.IsAiming.IsPressed();
-        GetPlayerLookDelta = inputControls.Player.LookDelta.ReadValue<Vector2>();
+        GetPlayerAimPosition = inputControls.Player.AimPosition.ReadValue<Vector2>();
+
+        GetCameraLookDelta = inputControls.Camera.MouseDelta.ReadValue<Vector2>();
     }
 
     public Vector2 GetPlayerMovement { get; private set; }
     public bool IsPlayerRunning { get; private set; }
     public bool IsPlayerShooting { get; private set; }
     public bool IsPlayerAiming { get; private set; }
-    public Vector2 GetPlayerLookDelta { get; private set; }
+    public Vector2 GetPlayerAimPosition { get; private set; }
+
+    public Vector2 GetCameraLookDelta { get; private set; }
 }
