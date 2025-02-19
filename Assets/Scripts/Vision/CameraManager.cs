@@ -58,4 +58,6 @@ public class CameraManager : MonoBehaviour
     }
 
     public Quaternion GetCameraPlanerRotation() => Quaternion.Euler(0f, rotationY, 0f);
+
+    public float GetRotationSpeed() => rotationSpeed;
 }

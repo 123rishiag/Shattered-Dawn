@@ -33,6 +33,8 @@ public class PlayerManager : MonoBehaviour
     private float verticalVelocity;
     private Vector3 aimDirection;
 
+    private bool hasControl = true;
+
     private void Awake()
     {
         characterController = GetComponent<CharacterController>();
@@ -47,9 +49,13 @@ public class PlayerManager : MonoBehaviour
     private void Update()
     {
         SetPlayerState();
-        SetMovement();
-        SetAim();
-        SetAnimation();
+
+        if (hasControl)
+        {
+            SetMovement();
+            SetAim();
+            SetAnimation();
+        }
     }
 
     // Setters
@@ -214,5 +220,11 @@ public class PlayerManager : MonoBehaviour
     {
         Gizmos.color = Color.blue;
         Gizmos.DrawSphere(transform.TransformPoint(groundCheckOffset), groundCheckRadius);
+    }
+
+    public void SetControl(bool _hasControl)
+    {
+        hasControl = _hasControl;
+        characterController.enabled = _hasControl;
     }
 }
